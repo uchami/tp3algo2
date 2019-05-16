@@ -2,6 +2,7 @@
 #define STRING_MAP_H_
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -72,13 +73,19 @@ public:
      EMPTY
      * devuelve true si no hay ningún elemento en el diccionario */
     bool empty() const;
+    vector<string> claves(string camino);
 
 private:
 
     struct Nodo {
         vector<Nodo*> siguientes;
         T* definicion;
+        Nodo():siguientes(256, NULL), definicion(NULL){
+        }
     };
+
+    void copiarHijos(Nodo* destino, Nodo* fuente);
+    void destruirDic();
 
     Nodo* raiz;
     int _size;

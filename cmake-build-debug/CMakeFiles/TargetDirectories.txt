@@ -1,0 +1,6 @@
+/home/uchami/Desktop/taller_diccionario_sobre_trie/tp3algo2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/uchami/Desktop/taller_diccionario_sobre_trie/tp3algo2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/uchami/Desktop/taller_diccionario_sobre_trie/tp3algo2/cmake-build-debug/CMakeFiles/gtest.dir
+/home/uchami/Desktop/taller_diccionario_sobre_trie/tp3algo2/cmake-build-debug/CMakeFiles/correrTests.dir
+/home/uchami/Desktop/taller_diccionario_sobre_trie/tp3algo2/cmake-build-debug/CMakeFiles/gtest_main.dir
+/home/uchami/Desktop/taller_diccionario_sobre_trie/tp3algo2/cmake-build-debug/CMakeFiles/correrValgrind.dir
