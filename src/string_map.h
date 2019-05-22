@@ -84,8 +84,9 @@ private:
         }
     };
 
-    void copiarHijos(Nodo* destino, Nodo* fuente);
+    void copiarHijos(Nodo** destino, Nodo** fuente);
     void destruirDic();
+    bool borrarDef(Nodo* n, string clave);
 
     Nodo* raiz;
     int _size;

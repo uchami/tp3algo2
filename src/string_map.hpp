@@ -39,7 +39,7 @@ vector<string> string_map<T>::claves(string camino) {
 
 template <typename T>
 void string_map<T>::copiarHijos(Nodo** destino, Nodo** fuente) {
-    if(fuente == NULL) {
+    if(*fuente == NULL) {
         return;
     }
 
@@ -47,7 +47,7 @@ void string_map<T>::copiarHijos(Nodo** destino, Nodo** fuente) {
 
     (*destino)->definicion = ((*fuente)->definicion == NULL) ? NULL : new T(*((*fuente)->definicion));
     for (int i = 0; i < 256; ++i) {
-        copiarHijos((*destino)->siguientes[i], (*fuente)->siguientes[i]);
+        copiarHijos(&((*destino)->siguientes[i]), &((*fuente)->siguientes[i]));
     }
 }
 
@@ -141,8 +141,54 @@ T& string_map<T>::at(const string& clave) {
 }
 
 template <typename T>
+bool string_map<T>::borrarDef(Nodo* n, string clave){
+    if(n == NULL){
+        return false;
+    }
+
+    if(clave == ""){
+        bool tieneHijos = false;
+        for (int i = 0; i < 256; ++i) {
+            tieneHijos = tieneHijos || n->siguientes[i] != NULL;
+        }
+        if(tieneHijos){
+            delete (n->definicion);
+            n->definicion = NULL;
+            _size--;
+            return false;
+        } else {
+            delete (n->definicion);
+            delete n;
+            _size--;
+            return true;
+        }
+    } else {
+        int cantHijos = 0;
+        for (int i = 0; i < 256; ++i) {
+            if(n->siguientes[i] != NULL){
+                cantHijos++;
+            }
+        }
+        bool tieneHijos = cantHijos > 1;
+        bool borre = borrarDef(n->siguientes[int(clave[0])], clave.substr(1));
+
+        if(borre){
+            n->siguientes[int(clave[0])] = NULL;
+            if(!tieneHijos && n->definicion == NULL){
+                delete n;
+                if(raiz == n){
+                    raiz = NULL;
+                }
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+template <typename T>
 void string_map<T>::erase(const string& clave) {
-    // COMPLETAR
+    borrarDef(raiz, clave);
 }
 
 template <typename T>
