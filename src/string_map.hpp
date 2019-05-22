@@ -38,15 +38,16 @@ vector<string> string_map<T>::claves(string camino) {
 }*/
 
 template <typename T>
-void string_map<T>::copiarHijos(Nodo* destino, Nodo* fuente) {
+void string_map<T>::copiarHijos(Nodo** destino, Nodo** fuente) {
     if(fuente == NULL) {
         return;
     }
 
-    destino = new Nodo();
-    destino->definicion = new T(*fuente->definicion);
+    *destino = new Nodo();
+
+    (*destino)->definicion = ((*fuente)->definicion == NULL) ? NULL : new T(*((*fuente)->definicion));
     for (int i = 0; i < 256; ++i) {
-        copiarHijos(destino->siguientes[i], fuente->siguientes[i]);
+        copiarHijos((*destino)->siguientes[i], (*fuente)->siguientes[i]);
     }
 }
 
@@ -61,10 +62,11 @@ string_map<T>& string_map<T>::operator=(const string_map<T>& d) {
     }
 
     raiz = new Nodo();
-    raiz->definicion = new T(*d.raiz->definicion);
+
+    raiz->definicion = (d.raiz->definicion == NULL) ? NULL : new T(*d.raiz->definicion);
 
     for (int i = 0; i < 256; ++i) {
-        copiarHijos(raiz->siguientes[i], d.raiz->siguientes[i]);
+        copiarHijos(&(raiz->siguientes[i]), &(d.raiz->siguientes[i]));
     }
 }
 
@@ -107,9 +109,9 @@ int string_map<T>::count(const string& clave) const{
     while (i < clave.size() && actual->siguientes[charNum] != NULL){
         i++;
         actual = actual->siguientes[charNum];
-        int charNum = int(clave[i]);
+        charNum = int(clave[i]);
     }
-    return (i<clave.size() && (actual->siguientes[charNum])->definicion != NULL ) ? 1 : 0;
+    return (i==clave.size() && actual->definicion != NULL ) ? 1 : 0;
 }
 
 template <typename T>
