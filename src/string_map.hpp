@@ -8,18 +8,21 @@ string_map<T>::string_map(const string_map<T>& aCopiar) : string_map() {
 } // Provisto por la catedra: utiliza el operador asignacion para realizar la copia.
 
 template <typename T>
-void string_map<T>::destruirDic() {
-    if(raiz == NULL){
+void string_map<T>::destruirDic(Nodo*& root) {
+    if(root == NULL){
         _size = 0;
         return;
     }
-    Nodo* raizOriginal = raiz;
+    Nodo* raizOriginal = root;
     for (int i = 0; i < 256; ++i) {
-        raiz = raizOriginal->siguientes[i];
-        destruirDic();
-        if(raiz != NULL){
-            delete raiz;
-        }
+        root = raizOriginal->siguientes[i];
+        destruirDic(root);
+    }
+    if(raizOriginal != NULL){
+        delete raizOriginal->definicion;
+        raizOriginal->definicion = NULL;
+        delete raizOriginal;
+        raizOriginal = NULL;
     }
 }
 
@@ -54,7 +57,7 @@ void string_map<T>::copiarHijos(Nodo** destino, Nodo** fuente) {
 
 template <typename T>
 string_map<T>& string_map<T>::operator=(const string_map<T>& d) {
-    destruirDic();
+    destruirDic(raiz);
     _size = d._size;
     if(d.raiz == NULL){
         raiz = NULL;
@@ -72,7 +75,8 @@ string_map<T>& string_map<T>::operator=(const string_map<T>& d) {
 
 template <typename T>
 string_map<T>::~string_map(){
-    destruirDic();
+    destruirDic(raiz);
+    raiz = NULL;
 }
 
 template <typename T>
